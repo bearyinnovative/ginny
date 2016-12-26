@@ -1,14 +1,21 @@
-# ripple
-
-A Clojure library designed to ... well, that part is up to you.
+Ginny
+====
 
 ## Usage
 
-FIXME
+### Setup Envrionment
+``` bash
+$ cd $PROJECT
+$ vim config # setup
+$ source config
+```
+
+### Running
+``` bash
+$ cd $PROJECT
+$ lein run
+```
 
 ## License
 
-Copyright © 2016 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Copyright © 2016 bearyinnvative
