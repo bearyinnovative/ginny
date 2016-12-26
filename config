@@ -1,0 +1,25 @@
+export GINNY_WORK_INTERVAL_SECOND=3600
+
+export GINNY_WINDOWS_REPO="owner/repo"
+export GINNY_WINDOWS_CHANGELOG_PATH="changelog.md"
+export GINNY_WINDOWS_ACCESS_TOKEN="access-token"
+
+export GINNY_MAC_REPO="owner/repo"
+export GINNY_MAC_CHANGELOG_PATH="changelog.md"
+export GINNY_MAC_ACCESS_TOKEN="access-token"
+
+export GINNY_LINUX_REPO="owner/repo"
+export GINNY_LINUX_CHANGELOG_PATH="changelog.md"
+export GINNY_LINUX_ACCESS_TOKEN="access-token"
+
+export GINNY_ANDROID_REPO="owner/repo"
+export GINNY_ANDROID_CHANGELOG_PATH="changelog.md"
+export GINNY_ANDROID_ACCESS_TOKEN="access-token"
+
+export GINNY_IOS_REPO="owner/repo"
+export GINNY_IOS_CHANGELOG_PATH="changelog.md"
+export GINNY_IOS_ACCESS_TOKEN="access-token"
+
+export GINNY_QINIU_ACCESS_KEY="qiniu-access-key"
+export GINNY_QINIU_SECRET_KEY="qiniu-secret-key"
+export GINNY_QINIU_BUCKET="test"
