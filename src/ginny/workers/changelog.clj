@@ -18,7 +18,7 @@
 
 (defn json-file-name
   [key]
-  (format "%s-changelog.json" (name key)))
+  (format "releases/%s-changelog.json" (name key)))
 
 (defn upload
   [changelog]
