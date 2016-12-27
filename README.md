@@ -8,6 +8,7 @@ Ginny
 5. create a bucket(`my-bucket`) in [qiniu](https://qiniu.com) and get access-key(`my-qiniu-access-key`) and secret-key(`my-qiniu-secret-key`)
 6. create an incoming robot in [bearychat](https://bearychat.com) and get the hook url: `https://bearychat-hook-url`
 7. setup [ginny](https://github.com/bearyinnovative/ginny) and run
+8. **GET** a rendered changelog **json**: `http::/your-qiniu-bucket-url/MAC-changelog.json` (**NOTE** `MAC` in `MAC-changelog.json` depends on `platform` fields in your `my-changelog.md`)
 ```bash
 export GINNY_INCOMING_HOOK_URL="https://bearychat-hook-url"
 
