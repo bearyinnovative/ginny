@@ -24,5 +24,3 @@
 (defonce qiniu {:access-key (env/->str :qiniu-access-key "")
                 :secret-key (env/->str :qiniu-secret-key "")
                 :bucket (env/->str :qiniu-bucket "")})
-
-(defonce work-interval-second (env/->int :work-interval-second))
