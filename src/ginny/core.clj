@@ -1,7 +1,6 @@
 (ns ginny.core
   (:require [ginny.config :as config]
-            [ginny.worker :as worker]
-            [taoensso.timbre :as timbre]
+            [ginny.workers.changelog :as changelog]
             [clj.qiniu :as qiniu])
   (:gen-class))
 
@@ -13,7 +12,7 @@
   "I don't do a whole lot."
   [& args]
   (let [{:keys [access-key secret-key]} config/qiniu
-        workers [worker/changelog-worker]]
+        workers [changelog/worker]]
     (qiniu/set-config! :access-key access-key
                        :secret-key secret-key)
-    (run-workers)))
+    (run-workers workers)))

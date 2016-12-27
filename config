@@ -1,4 +1,4 @@
-export GINNY_WORK_INTERVAL_SECOND=3600
+export GINNY_INCOMING_HOOK_URL="beary-chat-incoming-hook-url"
 
 export GINNY_WINDOWS_REPO="owner/repo"
 export GINNY_WINDOWS_CHANGELOG_PATH="changelog.md"

@@ -7,6 +7,7 @@
                  [cheshire "5.6.3"]
                  [environ "1.1.0"]
                  [clj-http "2.3.0"]
+                 [bouncer "1.0.0"]
                  [clj.qiniu "0.1.2"]
                  [com.taoensso/timbre "4.8.0"]]
   :main ^:skip-aot ginny.core

@@ -24,3 +24,5 @@
 (defonce qiniu {:access-key (env/->str :qiniu-access-key "")
                 :secret-key (env/->str :qiniu-secret-key "")
                 :bucket (env/->str :qiniu-bucket "")})
+
+(defonce incoming-hook-url (env/->str :incoming-hook-url ""))

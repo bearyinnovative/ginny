@@ -1,6 +1,9 @@
 (ns ginny.changelog
   (:require [clojure.string :as string]
             [ginny.helper :as h]
+            [bouncer.core :as bouncer]
+            [bouncer.validators :as v]
+            [clj-time.format :as time-format]
             [taoensso.timbre :as timbre]))
 
 (defn parse-kv-item
@@ -93,14 +96,9 @@
         releases (map parse-release release-mds)]
     {:releases releases}))
 
-(defn before-parse
-  [md]
-  (string/replace md #"\n+" "\n"))
-
 (defn parse-changelog
   [md]
-  (let [[header-md body-md] (h/split (before-parse md)
-                                     #"\n-{4,}")
+  (let [[header-md body-md] (h/split md #"\n-{4,}")
         header (parse-header header-md)
         body (parse-body body-md)]
     {:header header
@@ -111,3 +109,19 @@
   (-> changelog
       :header
       :platform))
+
+(defn release-valid?
+  [release]
+  (bouncer/validate release
+                    :version v/required
+                    :date v/datetime (time-format/formatter "yy-MM-dd")))
+
+(defn releases-valid?
+  [releases]
+  (every? true? (mapv release-valid? releases)))
+
+(defn changelog-valid?
+  [changelog]
+  (bouncer/validate changelog
+                    [:header :platform] v/required
+                    [:body :releases] releases-valid?))
