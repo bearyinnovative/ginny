@@ -1,6 +1,26 @@
 Ginny
 ====
 
+## Example
+1. create a github repo: `my/mac-client-repo`
+2. [genreate an access token](https://github.com/settings/tokens): `my-access-token`
+3. push your changelog markdown: `my-changelog.md`
+5. create a bucket(`my-bucket`) in [qiniu](https://qiniu.com) and get access-key(`my-qiniu-access-key`) and secret-key(`my-qiniu-secret-key`)
+6. create an incoming robot in [bearychat](https://bearychat.com) and get the hook url: `https://bearychat-hook-url`
+7. setup [ginny](https://github.com/bearyinnovative/ginny) and run
+```bash
+export GINNY_INCOMING_HOOK_URL="https://bearychat-hook-url"
+
+export GINNY_MAC_ENABLED=true
+export GINNY_MAC_REPO="my/mac-client-repo"
+export GINNY_MAC_CHANGELOG_PATH="my-changelog.md"
+export GINNY_MAC_ACCESS_TOKEN="my-access-token"
+
+export GINNY_QINIU_ACCESS_KEY="my-qiniu-access-key"
+export GINNY_QINIU_SECRET_KEY="my-qiniu-secret-key"
+export GINNY_QINIU_BUCKET="my-bucket"
+```
+
 ## Usage
 
 ### Setup Envrionment
