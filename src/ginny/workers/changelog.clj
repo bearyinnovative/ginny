@@ -43,6 +43,9 @@
 
 (defn work
   [platform]
+  (-> (fetch-by-key platform)
+      md->changelog
+      upload)
   (try
     (do
       (-> (fetch-by-key platform)
@@ -56,9 +59,5 @@
 
 (defn worker
   []
-  (let [platforms [:windows
-                   :mac
-                   :android
-                   :ios
-                   :linux]]
+  (let [platforms config/enabled-platforms]
     (doall (map work platforms))))
