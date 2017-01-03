@@ -1,17 +1,22 @@
 (ns ginny.workers.changelog
   (:require [ginny.incoming :as incoming]
-            [ginny.storage :as storage]
+            [ginny.storages.github :as github]
+            [ginny.storages.qiniu :as qiniu]
             [ginny.changelog :as cl]
             [ginny.helper :as helper]
             [ginny.config :as config]))
 
-(defn fetch-by-key
-  [key]
-  (let [{:keys [repo changelog-path access-token]} (key config/platforms)
-        file-info (storage/get-github-file-info repo changelog-path access-token)
+(defn fetch-by-platform
+  [{:keys [repo path access-token private]}]
+  (let [file-info (if private
+                    (github/get-private-file-info repo path access-token)
+                    (github/get-public-file-info repo path))
         file-url (:download_url file-info)
-        changelog-md (storage/read-github-file file-url access-token)]
-    (if-not (nil? changelog-md)
+        changelog-md (if private
+                       (github/read-private-file file-url
+                                                 access-token)
+                       (github/read-public-file file-url))]
+    (if (some? changelog-md)
       changelog-md
       (throw (Exception. (str "cannot fetch changelog from github: "
                               (helper/map->json file-info)))))))
@@ -27,7 +32,9 @@
         stream (-> changelog
                    helper/map->json
                    helper/string->stream)
-        resp (storage/upload-file-to-qiniu stream key)]
+        resp (qiniu/upload-file stream
+                                key
+                                (:bucket config/qiniu))]
     (if (:ok resp)
       resp
       (throw (Exception. (str "cannot upload changelog to qiniu: "
@@ -43,12 +50,9 @@
 
 (defn work
   [platform]
-  (-> (fetch-by-key platform)
-      md->changelog
-      upload)
   (try
     (do
-      (-> (fetch-by-key platform)
+      (-> (fetch-by-platform platform)
           md->changelog
           upload)
       (incoming/report-success-message :changelog
@@ -59,5 +63,4 @@
 
 (defn worker
   []
-  (let [platforms config/enabled-platforms]
-    (doall (map work platforms))))
+  (doall (map work (config/get-changelog-platforms))))

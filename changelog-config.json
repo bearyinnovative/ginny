@@ -1,0 +1,14 @@
+{
+  "paltforms": [{
+    "name": "windows",
+    "repo": "owner/repo",
+    "path": "changelog.md",
+    "private": false
+  }, {
+    "name": "mac",
+    "repo": "owner/repo",
+    "path": "changelog.md",
+    "private": true,
+    "access-token": "access-token"
+  }]
+}

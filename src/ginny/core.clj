@@ -1,7 +1,7 @@
 (ns ginny.core
   (:require [ginny.config :as config]
             [ginny.workers.changelog :as changelog]
-            [clj.qiniu :as qiniu])
+            [ginny.storages.qiniu :as qiniu])
   (:gen-class))
 
 (defn run-workers
@@ -13,6 +13,5 @@
   [& args]
   (let [{:keys [access-key secret-key]} config/qiniu
         workers [changelog/worker]]
-    (qiniu/set-config! :access-key access-key
-                       :secret-key secret-key)
+    (qiniu/init-config access-key secret-key)
     (run-workers workers)))
