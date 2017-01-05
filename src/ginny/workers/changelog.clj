@@ -7,10 +7,10 @@
             [ginny.config :as config]))
 
 (defn fetch-by-platform
-  [{:keys [repo path access-token private]}]
+  [{:keys [repo path access-token branch private]}]
   (let [file-info (if private
-                    (github/get-private-file-info repo path access-token)
-                    (github/get-public-file-info repo path))
+                    (github/get-private-file-info repo path branch access-token)
+                    (github/get-public-file-info repo path branch))
         file-url (:download_url file-info)
         changelog-md (if private
                        (github/read-private-file file-url
@@ -56,11 +56,12 @@
           md->changelog
           upload)
       (incoming/report-success-message :changelog
-                                       (str (name platform)
+                                       (str (name (:name platform))
                                             " works fine")))
     (catch Exception e
       (incoming/report-error-message :changelog (.getMessage e)))))
 
 (defn worker
   []
-  (doall (map work (config/get-changelog-platforms))))
+  (mapv work
+        (config/get-changelog-platforms)))

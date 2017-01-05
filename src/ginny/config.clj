@@ -12,7 +12,7 @@
 (defonce incoming-hook-url (env/->str :incoming-hook-url ""))
 
 (defn get-changelog-platforms []
-  (-> changelog-config-path
-      slurp
-      helper/json->map
-      :platforms))
+  (let [changelog-config (-> changelog-config-path
+                        slurp
+                        helper/json->map)]
+    (:platforms changelog-config)))

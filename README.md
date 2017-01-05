@@ -12,10 +12,7 @@ Ginny
 ```bash
 export GINNY_INCOMING_HOOK_URL="https://bearychat-hook-url"
 
-export GINNY_MAC_ENABLED=true
-export GINNY_MAC_REPO="my/mac-client-repo"
-export GINNY_MAC_CHANGELOG_PATH="my-changelog.md"
-export GINNY_MAC_ACCESS_TOKEN="my-access-token"
+export GINNY_CHANGELOG_CONFIG="/.../changelog-config.json"
 
 export GINNY_QINIU_ACCESS_KEY="my-qiniu-access-key"
 export GINNY_QINIU_SECRET_KEY="my-qiniu-secret-key"

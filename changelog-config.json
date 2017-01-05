@@ -1,13 +1,15 @@
 {
-  "paltforms": [{
+  "platforms": [{
     "name": "windows",
     "repo": "owner/repo",
     "path": "changelog.md",
+    "branch": "master",
     "private": false
   }, {
     "name": "mac",
     "repo": "owner/repo",
     "path": "changelog.md",
+    "branch": "master",
     "private": true,
     "access-token": "access-token"
   }]

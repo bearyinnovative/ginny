@@ -1,7 +1,6 @@
 (ns ginny.incoming
   (:require [ginny.helper :as helper]
             [ginny.config :as config]
-            [taoensso.timbre :as timbre]
             [clj-http.client :as http]))
 
 (defn push-message
@@ -10,7 +9,6 @@
         msg {:text text
              :markdown true
              :attachments attachments}]
-    (timbre/debug msg)
     (http/post url {:form-params msg
                     :content-type :json})))
 

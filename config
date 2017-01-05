@@ -1,0 +1,7 @@
+export GINNY_INCOMING_HOOK_URL="https://hook.bearychat.com/=bw96P/incoming/37d3d48359d5ebd215e5"
+
+export GINNY_CHANGELOG_CONFIG="/....../changelog-config.json"
+
+export GINNY_QINIU_ACCESS_KEY="QINIU_ACCESS_KEY"
+export GINNY_QINIU_SECRET_KEY="QINIU_SECRET_KEY"
+export GINNY_QINIU_BUCKET="test"

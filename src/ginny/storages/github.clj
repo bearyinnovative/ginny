@@ -1,31 +1,30 @@
 (ns ginny.storages.github
   (:require [ginny.helper :as helper]
-            [taoensso.timbre :as timbre]
             [clj-http.client :as http]))
 
 (def ^:const RAW-CONTENT-TYPE "application/vnd.github.v3.raw")
 
 (defn get-file-info
-  [repo path headers]
-  (let [url (format "https://api.github.com/repos/%s/contents/%s"
-                    repo path)
+  [repo path branch headers]
+  (let [url (format "https://api.github.com/repos/%s/contents/%s?ref=%s"
+                    repo path branch)
         resp (http/get url headers)]
-    (timbre/debug url)
-    (timbre/debug headers)
     (when (= (:status resp) 200)
       (helper/json->map (:body resp)))))
 
 (defn get-public-file-info
-  [repo path]
+  [repo path branch]
   (get-file-info repo
                  path
+                 branch
                  {:content-type RAW-CONTENT-TYPE
                   :throw-exceptions false}))
 
 (defn get-private-file-info
-  [repo path token]
+  [repo path branch token]
   (get-file-info repo
                  path
+                 branch
                  {:authorization (str "token " token)
                   :content-type RAW-CONTENT-TYPE
                   :throw-exceptions false}))
