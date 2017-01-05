@@ -36,7 +36,7 @@
                                 key
                                 (:bucket config/qiniu))]
     (if (:ok resp)
-      resp
+      key
       (throw (Exception. (str "cannot upload changelog to qiniu: "
                               (helper/map->json resp)))))))
 
@@ -51,13 +51,15 @@
 (defn work
   [platform]
   (try
-    (do
-      (-> (fetch-by-platform platform)
-          md->changelog
-          upload)
+    (let [changelog-key (-> (fetch-by-platform platform)
+                            md->changelog
+                            upload)
+          url (str (:base-url config/qiniu) "/" changelog-key)]
       (incoming/report-success-message :changelog
                                        (str (name (:name platform))
-                                            " works fine")))
+                                            " works fine"
+                                            \newline
+                                            "url: " url)))
     (catch Exception e
       (incoming/report-error-message :changelog (.getMessage e)))))
 

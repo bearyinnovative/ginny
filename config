@@ -4,4 +4,5 @@ export GINNY_CHANGELOG_CONFIG="/....../changelog-config.json"
 
 export GINNY_QINIU_ACCESS_KEY="QINIU_ACCESS_KEY"
 export GINNY_QINIU_SECRET_KEY="QINIU_SECRET_KEY"
+export GINNY_QINIU_BASE_URL="https://qiniu-base-url"
 export GINNY_QINIU_BUCKET="test"
