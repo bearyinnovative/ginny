@@ -54,13 +54,14 @@
     (let [changelog-key (-> (fetch-by-platform platform)
                             md->changelog
                             upload)
-          url (str (:base-url config/qiniu) "/" changelog-key)]
-      (qiniu/refresh-cache :urls [url])
+          url (str (:base-url config/qiniu) "/" changelog-key)
+          pretty-url (str (:pretty-base-url config/qiniu) "/" changelog-key)]
+      (qiniu/refresh-cache :urls [url] :dirs [])
       (incoming/report-success-message :changelog
                                        (str (name (:name platform))
                                             " works fine"
                                             \newline
-                                            "url: " url)))
+                                            "url: " pretty-url)))
     (catch Exception e
       (incoming/report-error-message :changelog (.getMessage e)))))
 
