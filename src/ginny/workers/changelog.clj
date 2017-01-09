@@ -55,6 +55,7 @@
                             md->changelog
                             upload)
           url (str (:base-url config/qiniu) "/" changelog-key)]
+      (qiniu/refresh-cache :urls [url])
       (incoming/report-success-message :changelog
                                        (str (name (:name platform))
                                             " works fine"

@@ -15,3 +15,7 @@
     (qiniu/upload uptoken
                   key
                   file)))
+
+(defn refresh-cache
+  [& {:keys [urls dirs] :as opts}]
+  (qiniu/refresh-bucket-cdn urls dirs))
