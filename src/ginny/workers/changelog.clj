@@ -23,7 +23,8 @@
 
 (defn json-file-name
   [key]
-  (format "releases/%s/changelog.json" (name key)))
+  (clojure.string/lower-case
+    (format "releases/%s/changelog.json" (name key))))
 
 (defn upload
   [changelog]
