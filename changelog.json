@@ -1,0 +1,16 @@
+{
+  "platforms": [{
+    "name": "pensieve",
+    "repo": "bearyinnovative/changelogs",
+    "path": "pensieve-changelog.md",
+    "branch": "master",
+    "private": false
+  },
+  {
+    "name": "openapi",
+    "repo": "bearyinnovative/changelogs",
+    "path": "openapi-changelog.md",
+    "branch": "master",
+    "private": false
+  }]
+}

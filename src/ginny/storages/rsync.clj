@@ -13,7 +13,9 @@
 
 (defn- upload
   [local-path remote-path]
-  (sh "rsync" "-P" "--delete" local-path remote-path))
+  (let [{ret :exit stderr :err}
+        (sh "rsync" "-P" "-r" "--delete" local-path remote-path)]
+    (assert (zero? ret) stderr)))
 
 (defn upload-file
   [file-content remote-path]

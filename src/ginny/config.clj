@@ -11,6 +11,8 @@
                 :pretty-base-url (env/->str :qiniu-pretty-base-url "")
                 :bucket (env/->str :qiniu-bucket "")})
 
+(defonce rsync {:path-prefix (env/->str :rsync-path-prefix "/tmp/")})
+
 (defonce incoming-hook-url (env/->str :incoming-hook-url ""))
 
 (defn get-changelog-platforms []
