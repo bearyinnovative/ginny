@@ -4,9 +4,10 @@
             [ginny.storages.qiniu :as qiniu])
   (:gen-class))
 
-(defn run-workers
+(defn- run-workers
   [workers]
-  (mapv #(apply % nil) workers))
+  ; TODO: run in parallel
+  (run! #(%) workers))
 
 (defn -main
   "I don't do a whole lot."

@@ -21,6 +21,7 @@
       (throw (Exception. (str "cannot fetch changelog from github: "
                               (helper/map->json file-info)))))))
 
+; TODO move qiniu related process logic out
 (defn json-file-name
   [key]
   (clojure.string/lower-case
@@ -49,24 +50,31 @@
       (throw (Exception. (str "cannot parse changelog: "
                               md))))))
 
-(defn work
-  [platform]
+(defn- upload-to-qiniu
+  [changelog-name changelog]
+  (let [file-key (upload changelog)
+        file-url (format "%s/%s" (:base-url config/qiniu) file-key)
+        access-url (format "%s/%s" (:pretty-base-url config/qiniu) file-key)]
+    (qiniu/refresh-cache :urls [file-url] :dirs [])
+    (incoming/report-success-message
+      :changelog-qiniu
+      (format "changelog %s uploaded to qiniu\n %s"
+              changelog-name access-url))))
+
+(defn upload-to-qiniu!
+  [& args]
   (try
-    (let [changelog-key (-> (fetch-by-platform platform)
-                            md->changelog
-                            upload)
-          url (str (:base-url config/qiniu) "/" changelog-key)
-          pretty-url (str (:pretty-base-url config/qiniu) "/" changelog-key)]
-      (qiniu/refresh-cache :urls [url] :dirs [])
-      (incoming/report-success-message :changelog
-                                       (str (name (:name platform))
-                                            " works fine"
-                                            \newline
-                                            "url: " pretty-url)))
+    (apply upload-to-qiniu args)
     (catch Exception e
-      (incoming/report-error-message :changelog (.getMessage e)))))
+      (incoming/report-error-message :changelog-qiniu (.getMessage e)))))
+
+(defn generate-changelog!
+  [platform]
+  (let [changelog-name (name (:name platform))
+        changelog (-> platform fetch-by-platform md->changelog)]
+    (upload-to-qiniu! changelog-name changelog)))
 
 (defn worker
   []
-  (mapv work
-        (config/get-changelog-platforms)))
+  ; TODO: run in parallel
+  (run! generate-changelog! (config/get-changelog-platforms)))
