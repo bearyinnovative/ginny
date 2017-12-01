@@ -14,7 +14,7 @@
 
 (defonce rsync
   {:path-prefixs (-> (env/->str :rsync-path-prefixs "/tmp/")
-                     (string/split #","))
+                     (string/split #","))})
    
 (defonce incoming-hook-url (env/->str :incoming-hook-url ""))
 
