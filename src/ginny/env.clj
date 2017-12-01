@@ -24,6 +24,3 @@
 (defn ->double
   [k & args]
   (Double/valueOf (apply env (ginny-env-key k) args)))
-
-
-
