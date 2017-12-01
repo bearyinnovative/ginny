@@ -1,4 +1,5 @@
 (ns ginny.workers.changelog
+  (:require [clojure.string :as string])
   (:require [ginny.incoming :as incoming]
             [ginny.storages.github :as github]
             [ginny.storages.qiniu :as qiniu]
@@ -70,32 +71,36 @@
       (incoming/report-error-message :changelog-qiniu (.getMessage e)))))
 
 (defn- upload-with-rsync
-  [changelog-name changelog]
-  (let [remote-file-path
+  [path changelog-name changelog]
+  (let [[host _] (string/split path #":")
+        remote-file-path
         (clojure.string/lower-case
           ; FIXME: join path with path library
-          (format "%s%s.json"
-                  (:path-prefix config/rsync) (cl/get-platform changelog)))
+          (format "%s%s.json" path (cl/get-platform changelog)))
         file-content (helper/map->json changelog)]
     (when-not (rsync/upload-file file-content remote-file-path)
       (throw (Exception. (format "upload to %s failed" remote-file-path))))
     (incoming/report-success-message
       :changelog-rsync
-      (format "changelog %s uploaded to remote server" changelog-name))))
+      (format "changelog %s uploaded to remote server: %s"
+              changelog-name host))))
 
 (defn upload-with-rsync!
-  [& args]
-  (try
-    (apply upload-with-rsync args)
-    (catch Exception e
-      (incoming/report-error-message :changelog-rsync (.getMessage e)))))
+  [paths & args]
+  {:pre (seq? paths)}
+  (doseq [p paths]
+    (try
+      (apply upload-with-rsync (cons p args))
+      (catch Exception e
+        (incoming/report-error-message :changelog-rsync (.getMessage e))))))
 
 (defn generate-changelog!
   [platform]
   (let [changelog-name (name (:name platform))
-        changelog (-> platform fetch-by-platform md->changelog)]
+        changelog (-> platform fetch-by-platform md->changelog)
+        paths (:path-prefixs config/rsync)]
     (upload-to-qiniu! changelog-name changelog)
-    (upload-with-rsync! changelog-name changelog)))
+    (upload-with-rsync! paths changelog-name changelog)))
 
 (defn worker
   []
