@@ -12,5 +12,26 @@
     "path": "openapi-changelog.md",
     "branch": "master",
     "private": false
+  },
+  {
+    "name": "client",
+    "repo": "bearyinnovative/changelogs",
+    "path": "pensieve-client-changelog.md",
+    "branch": "master",
+    "private": false
+  },
+  {
+    "name": "horcrux",
+    "repo": "bearyinnovative/changelogs",
+    "path": "horcrux-changelog.md",
+    "branch": "master",
+    "private": false
+  },
+  {
+    "name": "mandrake",
+    "repo": "bearyinnovative/changelogs",
+    "path": "mandrake-changelog.md",
+    "branch": "master",
+    "private": false
   }]
 }
