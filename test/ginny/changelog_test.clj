@@ -221,6 +221,9 @@
                                       "- Added another feature"
                                       "- Added third feature"
                                       ""
+                                      "## Cover"
+                                      "[![hello](http://bearychat.com/static/cover.png)](http://bearychat.com)"
+                                      ""
                                       "# 2.0.0 / 2016-11-24"
                                       "## Client"
                                       "### 32bit"
@@ -236,7 +239,10 @@
                                       ""
                                       "## Added"
                                       "- Added a feature1"
-                                      "- Added another feature2"])
+                                      "- Added another feature2"
+                                      ""
+                                      "## Cover"
+                                      "![](http://static.qiniu.com/png/123sa.png)"])
             changelog (parse md)]
         (is (= (count changelog) 2))
         (is (= (:header changelog) {:name "bearychat"
@@ -258,7 +264,10 @@
                                     "Fixed another bug")
                            :added '("Added a feature"
                                     "Added another feature"
-                                    "Added third feature")}))
+                                    "Added third feature")
+                           :cover '{:link "http://bearychat.com"
+                                    :image_text "hello"
+                                    :image_url "http://bearychat.com/static/cover.png"}}))
         (is (= (-> changelog
                    :body
                    :releases
@@ -270,4 +279,7 @@
                                              :downloadurl "http://bearychat.com/old/64bit.exe"}}
                             :fixed '("Fixed a bug1")
                             :added '("Added a feature1"
-                                     "Added another feature2")}))))))
+                                     "Added another feature2")
+                            :cover '{:link nil
+                                      :image_text ""
+                                      :image_url "http://static.qiniu.com/png/123sa.png"}}))))))

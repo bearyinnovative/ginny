@@ -48,7 +48,32 @@
          (map parse-category)
          (reduce merge))))
 
-(defn parse-category-with-items
+(defn parse-image-item
+  [item-md]
+  (let [item-matcher (re-matcher #"\!\[(.*)\]\((.+)\)" item-md)
+        [_ text url] (re-find item-matcher)]
+    {:image_text text
+     :image_url url}))
+
+(defn parse-link-item
+  [item-md]
+  (let [item-matcher (re-matcher #"\[(.+)\]\((.+)\)" item-md)
+        [_ content link] (re-find item-matcher)]
+    {:content content
+     :link link}))
+
+(defn parse-cover-item
+  [md]
+  (let [link? (string/starts-with? (string/trim md) "[")
+        cover-link (if link?
+                     (parse-link-item md)
+                     {:content md
+                      :link nil})
+        image-detail (parse-image-item (:content cover-link))]
+    (assoc image-detail
+           :link (:link cover-link))))
+
+(defn parse-list-items
   [md]
   (let [item-mds (h/split (str \newline md)
                           #"\n\s*-\s*")]
@@ -58,6 +83,26 @@
            (reduce merge))
       item-mds)))
 
+(defmulti parse-category-with-items
+  (fn [md title]
+    (keyword title)))
+
+(defmethod parse-category-with-items :Added
+  [md title]
+  (parse-list-items md))
+
+(defmethod parse-category-with-items :Fixed
+  [md title]
+  (parse-list-items md))
+
+(defmethod parse-category-with-items :Cover
+  [md title]
+  (parse-cover-item md))
+
+(defmethod parse-category-with-items :default
+  [md title]
+  (parse-list-items md))
+
 (defn parse-category
   [md]
   (let [[title-md child-md] (h/split-lines md 2)
@@ -66,7 +111,7 @@
       (if (sub-category? child-md)
         (let [sub-categories (parse-category-with-sub-categories child-md)]
           {(h/->keyword title) sub-categories})
-        (let [items (parse-category-with-items child-md)]
+        (let [items (parse-category-with-items child-md title)]
           {(h/->keyword title) items})))))
 
 (defn parse-release-basic-info
