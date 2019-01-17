@@ -4,6 +4,7 @@
   :license {:name "Unlicense"
             :url "http://unlicense.org/UNLICENSE"}
   :dependencies [[org.clojure/clojure "1.8.0"]
+                 [org.clojure/tools.cli "0.3.1"]
                  [cheshire "5.6.3"]
                  [environ "1.1.0"]
                  [clj-http "2.3.0"]

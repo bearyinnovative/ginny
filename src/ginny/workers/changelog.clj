@@ -1,5 +1,6 @@
 (ns ginny.workers.changelog
-  (:require [clojure.string :as string])
+  (:require [clojure.string :as string]
+            [clojure.data.json :as json])
   (:require [ginny.incoming :as incoming]
             [ginny.storages.github :as github]
             [ginny.storages.qiniu :as qiniu]
@@ -102,7 +103,22 @@
     (upload-to-qiniu! changelog-name changelog)
     (upload-with-rsync! paths changelog-name changelog)))
 
-(defn worker
+(defn build-and-upload
   []
   ; TODO: run in parallel
   (run! generate-changelog! (config/get-changelog-platforms)))
+
+(defn build-changelog
+  [platform {:keys [prefix] :as kwargs}]
+  (let [prefix (or prefix "./changelog-")
+        changelog-name (name (:name platform))
+        target (format "%s%s.json" prefix changelog-name)
+        changelog (-> platform fetch-by-platform md->changelog)
+        content (-> changelog :body json/write-str)]
+    (with-open [outfile (clojure.java.io/writer target)]
+      (.write outfile content)
+      (println (str "Wrote file: " target)))))
+
+(defn build-all-changelogs
+  [kwargs]
+  (run! #(build-changelog % kwargs) (config/get-changelog-platforms)))
