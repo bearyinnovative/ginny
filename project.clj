@@ -13,4 +13,5 @@
                  [com.taoensso/timbre "4.8.0"]]
   :main ^:skip-aot ginny.core
   :target-path "target/%s"
-  :profiles {:uberjar {:aot :all}})
+  :profiles {:package {:local-repo "/tmp/.m2/repository"}
+             :uberjar {:aot :all}})

@@ -1,0 +1,28 @@
+events {
+    worker_connections 1024;
+}
+http {
+    include /etc/nginx/mime.types;
+    server_names_hash_bucket_size 64;
+    large_client_header_buffers 4 32k;
+    underscores_in_headers on;
+    gzip on;
+    gzip_min_length 1000;
+    gzip_types text/plain application/x-javascript application/javascript text/css text/html application/xml application/json;
+    charset utf-8;
+    charset_types text/html text/plain application/javascript application/x-javascript application/json text/css;
+
+    root $WORKSPACE/www/;
+
+    server {
+        listen 80 default_server;
+
+        location / {
+            rewrite ^/releases/([\w]+)/changelog\.json$ /$1.json break;
+
+            access_log $LOG_PATH/access.log;
+            error_log $LOG_PATH/error.log;
+        }
+    }
+
+}
