@@ -23,6 +23,9 @@ VOLUME $LOG_PATH
 COPY deploy/nginx.conf.template /etc/nginx/nginx.conf.template
 COPY output/ $WORKSPACE/www
 
+# Alias for changelog
+COPY output/pensieve.json $WORKSPACE/www/web.json
+
 EXPOSE 80
 
 CMD /bin/sh -c "envsubst '\$WORKSPACE \$LOG_PATH' < /etc/nginx/nginx.conf.template > /etc/nginx/nginx.conf && exec nginx -g 'daemon off;'"
