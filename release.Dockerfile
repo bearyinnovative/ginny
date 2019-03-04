@@ -25,6 +25,8 @@ COPY output/ $WORKSPACE/www
 
 # Alias for changelog
 COPY output/pensieve.json $WORKSPACE/www/web.json
+COPY output/mandrake.json $WORKSPACE/www/ios.json
+COPY output/horcrux.json $WORKSPACE/www/android.json
 
 EXPOSE 80
 
