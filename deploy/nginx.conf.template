@@ -14,6 +14,8 @@ http {
 
     root $WORKSPACE/www/;
 
+    add_header Access-Control-Allow-Origin "*";
+
     server {
         listen 80 default_server;
 

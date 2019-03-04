@@ -114,7 +114,7 @@
         changelog-name (name (:name platform))
         target (format "%s%s.json" prefix changelog-name)
         changelog (-> platform fetch-by-platform md->changelog)
-        content (-> changelog :body json/write-str)]
+        content (json/write-str changelog)]
     (with-open [outfile (clojure.java.io/writer target)]
       (.write outfile content)
       (println (str "Wrote file: " target)))))
